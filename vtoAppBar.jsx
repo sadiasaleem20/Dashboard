@@ -21,8 +21,23 @@ import Stack from '@mui/material/Stack';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import ArchiveIcon from '@mui/icons-material/Archive';
 import { TextField, Menu } from '@mui/material';
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+
+//modal
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 600,
+  bgcolor: 'background.paper',
+  p: 2,
+};
 
 function VTOAppBar() {
+
   const handleRefreshClick = () => {
     // Handle the refresh icon click event here
     // You can add your refresh logic in this function
@@ -53,6 +68,19 @@ const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  // modal
+   const [modalOpen, setModalOpen] = React.useState(false);
+  const handleModalOpen = () => setModalOpen(true);
+  const handleModalClose = () => setModalOpen(false);
+
+// 1st setting switch
+
+ const [visionChecked, setVisionChecked] = React.useState(true);
+
+  const handleVisionChange = (event) => {
+    setVisionChecked(event.target.checked);
   };
 
   return (
@@ -151,6 +179,7 @@ label="Share V/TO with All Teams" />
 
           <Tooltip title="Open V/TO Settings"> {/* Add Tooltip to show text on hover */}
             <IconButton
+             onClick={handleModalOpen}
               edge="end"
               color="inherit"
               aria-label="reset-zoom"
@@ -162,6 +191,32 @@ label="Share V/TO with All Teams" />
 
         </Toolbar>
       </AppBar>
+
+{/*setting modal*/}
+   <div>
+      <Modal
+        open={modalOpen}
+        onClose={handleModalClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <h6 style={{fontFamily: 'Poppins, sans-serif', fontSize: '20px'}} >Vision Settings</h6>
+
+          <div className="d-flex mt-4">
+             <div><Switch color="warning" onChange={handleVisionChange} inputProps={{ 'aria-label': 'controlled' }}/></div>
+             <h6 className="ms-2 mt-2" style={{fontFamily: 'Poppins, sans-serif', fontSize: '16px', fontWeight: '300', color: '#5E5E5E'}}>Custom Vision</h6>
+          </div>
+
+          <p className="ms-2" style={{color: '#666666', fontFamily: 'Poppins, sans-serif', fontSize: '14px'}}>Allows modification of the layout and content of the Vision page</p>
+
+          <div className="text-end mt-2">
+             <Button sx={{backgroundColor: '#2596be' }} variant="contained">CLOSE</Button>
+          </div>
+
+        </Box>
+      </Modal>
+    </div>
 
       {/* Your content goes here */}
       {/* Add your list of teams and users */}
